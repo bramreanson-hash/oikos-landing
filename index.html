@@ -23,10 +23,13 @@
   .g{backdrop-filter:blur(20px) saturate(150%);-webkit-backdrop-filter:blur(20px) saturate(150%);}
 
   /* HERO full-bleed */
-  .hero{position:relative;min-height:100vh;background-size:cover;background-position:center;display:flex;flex-direction:column;justify-content:space-between;}
+  .hero{position:relative;min-height:100vh;padding-top:62px;background-size:cover;background-position:center;display:flex;flex-direction:column;justify-content:space-between;}
   .hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,14,8,.28),rgba(20,14,8,0) 30%,rgba(20,14,8,0) 55%,rgba(20,14,8,.35));}
-  .nav{position:relative;z-index:5;margin:16px 16px 0;display:flex;align-items:center;justify-content:space-between;
-    padding:11px 18px;border-radius:100px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.4);}
+  .nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:40;width:calc(100% - 32px);max-width:428px;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:11px 18px;border-radius:100px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.4);
+    transition:background .3s ease,border-color .3s ease;}
+  .nav.scrolled{background:rgba(28,20,14,.55);border-color:rgba(255,255,255,.18);}
   .nav .lg{font-family:'Cormorant Garamond',serif;font-weight:600;letter-spacing:.26em;font-size:16px;color:#fff;}
   .nav .mn{color:#fff;font-size:18px;background:none;border:0;cursor:pointer;padding:0;line-height:1;}
 
@@ -207,6 +210,8 @@
     document.body.style.overflow=open?'hidden':'';
   }
   document.getElementById('menuBtn').addEventListener('click',function(){setMenu(true);});
+  var navBar=document.querySelector('.nav');
+  window.addEventListener('scroll',function(){navBar.classList.toggle('scrolled',window.scrollY>40);},{passive:true});
   document.getElementById('menuClose').addEventListener('click',function(){setMenu(false);});
   menu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){setMenu(false);});});
 </script>
