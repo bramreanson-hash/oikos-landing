@@ -285,6 +285,27 @@
   if('IntersectionObserver' in window){
     new IntersectionObserver(function(en,obs){if(en[0].isIntersecting){initTour();obs.disconnect();}},{rootMargin:'300px'}).observe(tourSec);
   }else{window.addEventListener('load',initTour);}
+  /* WhatsApp click tracking */
+  (function(){
+    var src='';
+    try{
+      var p=new URLSearchParams(location.search);
+      if(p.get('utm_source'))sessionStorage.setItem('oikos_src',p.get('utm_source'));
+      src=sessionStorage.getItem('oikos_src')||'';
+    }catch(e){}
+    document.querySelectorAll('a[href*="wa.me"],a[href*="api.whatsapp.com"]').forEach(function(a){
+      var where=a.closest('.hero')?'hero':a.closest('.cta')?'cta':a.closest('footer')?'footer':a.closest('.menu')?'menu':'unknown';
+      if(src){
+        try{
+          var u=new URL(a.href),t=u.searchParams.get('text')||'';
+          if(t.indexOf('(via ')===-1){u.searchParams.set('text',t+' (via '+src+')');a.href=u.toString();}
+        }catch(e){}
+      }
+      a.addEventListener('click',function(){
+        if(typeof gtag==='function')gtag('event','click_whatsapp',{link_location:where,traffic_source:src||'direct'});
+      });
+    });
+  })();
   var navBar=document.querySelector('.nav');
   window.addEventListener('scroll',function(){navBar.classList.toggle('scrolled',window.scrollY>40);},{passive:true});
   document.getElementById('menuClose').addEventListener('click',function(){setMenu(false);});
