@@ -3,18 +3,24 @@
 
 [[redirects]]
   from = "/tt"
-  to = "/?utm_source=tiktok&utm_medium=social"
-  status = 301
+  to = "/?utm_source=tiktok&utm_medium=social&utm_campaign=ags26"
+  status = 302
   force = true
 
 [[redirects]]
   from = "/ig"
-  to = "/?utm_source=instagram&utm_medium=social"
-  status = 301
+  to = "/?utm_source=ig&utm_medium=social&utm_campaign=ags26"
+  status = 302
   force = true
 
 [[redirects]]
   from = "/th"
-  to = "/?utm_source=threads&utm_medium=social"
-  status = 301
+  to = "/?utm_source=threads&utm_medium=social&utm_campaign=ags26"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/fb"
+  to = "/?utm_source=fb&utm_medium=social&utm_campaign=ags26"
+  status = 302
   force = true
