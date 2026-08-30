@@ -16,7 +16,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css">
 <style>
   :root{
     --bg:#F4F1EC; --ink:#241A12; --mut:#8A8074; --faint:#A79D8E;
@@ -97,21 +96,6 @@
   footer .addr{font-size:12.5px;color:var(--mut);line-height:1.6;margin-top:18px;}
   footer .cp{font-size:11px;color:var(--faint);margin-top:14px;letter-spacing:.02em;}
 
-  /* virtual tour */
-  .tour{margin-top:16px;position:relative;border-radius:22px;overflow:hidden;background:#1a1410;box-shadow:0 14px 32px rgba(0,0,0,.14);aspect-ratio:4/5;max-height:480px;}
-  .tour #pano{position:absolute;inset:0;}
-  .tour .pnlm-container{background:#1a1410;font-family:inherit;}
-  .tour .pnlm-about-msg{display:none!important;}
-  .tour .pnlm-load-box{border-radius:14px;background:rgba(28,20,14,.7);font-size:13px;}
-  .tour .thint{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);z-index:3;padding:7px 14px;border-radius:100px;
-    font-size:11px;letter-spacing:.10em;text-transform:uppercase;color:#fff;background:rgba(28,20,14,.55);
-    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);pointer-events:none;white-space:nowrap;transition:opacity .4s;}
-  .tour.touched .thint{opacity:0;}
-  .scenes{display:flex;gap:8px;overflow-x:auto;padding:14px 0 4px;scrollbar-width:none;}
-  .scenes::-webkit-scrollbar{display:none;}
-  .scenes button{flex:0 0 auto;padding:9px 15px;border-radius:100px;border:1px solid var(--line);background:transparent;
-    color:var(--mut);font-family:inherit;font-size:12.5px;letter-spacing:.03em;cursor:pointer;transition:all .2s;}
-  .scenes button.on{background:var(--ink);color:#fff;border-color:var(--ink);}
 </style>
 </head>
 <body>
@@ -149,28 +133,6 @@
         <div class="li"><b>Bathroom</b><i>Ensuite + water heater</i></div>
         <div class="li"><b>Entertainment</b><i>Android TV + Netflix</i></div>
         <div class="li"><b>Comfort</b><i>AC · desk · chair · smart lock</i></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- VIRTUAL TOUR -->
-  <section id="tour">
-    <div class="pad">
-      <div class="ey">Virtual Tour</div>
-      <h2>Take a 360° look.</h2>
-      <div class="lead">Step inside every corner of Oikos. Drag to look around, right from your phone.</div>
-      <div class="tour" id="tourBox">
-        <div id="pano"></div>
-        <div class="thint">Drag to look around</div>
-      </div>
-      <div class="scenes" id="scenes">
-        <button class="on" data-scene="bedroom">Bedroom</button>
-        <button data-scene="bathroom">Bathroom</button>
-        <button data-scene="wardrobe">Wardrobe</button>
-        <button data-scene="corridor">Corridor</button>
-        <button data-scene="stairs">Stairs</button>
-        <button data-scene="rooftop">Rooftop</button>
-        <button data-scene="parking">Parking</button>
       </div>
     </div>
   </section>
@@ -243,10 +205,9 @@
 <nav class="menu" id="menu" aria-hidden="true">
   <button class="mx" id="menuClose" aria-label="Close menu">&times;</button>
   <a href="#rooms"><span>01</span> Rooms</a>
-  <a href="#tour"><span>02</span> Virtual Tour</a>
-  <a href="#rooftop"><span>03</span> Rooftop</a>
-  <a href="#facilities"><span>04</span> Facilities</a>
-  <a href="#location"><span>05</span> Location</a>
+  <a href="#rooftop"><span>02</span> Rooftop</a>
+  <a href="#facilities"><span>03</span> Facilities</a>
+  <a href="#location"><span>04</span> Location</a>
   <a class="mwa" href="https://wa.me/6285190882885?text=Halo%20Oikos!%20Saya%20dari%20website,%20tertarik%20sewa%20kamar.%20Kamar%20apa%20yang%20masih%20tersedia%20dan%20apa%20saja%20fasilitasnya%3F" target="_blank" rel="noopener">Chat on WhatsApp &rarr;</a>
 </nav>
 
@@ -258,33 +219,6 @@
     document.body.style.overflow=open?'hidden':'';
   }
   document.getElementById('menuBtn').addEventListener('click',function(){setMenu(true);});
-  /* virtual tour */
-  var tourViewer=null,tourLoading=false;
-  function initTour(){
-    if(tourViewer||tourLoading)return;
-    tourLoading=true;
-    var go=function(){
-      var box=document.getElementById('tourBox'),chips=document.querySelectorAll('#scenes button'),scenes={};
-      chips.forEach(function(b){var k=b.dataset.scene;scenes[k]={type:'equirectangular',panorama:'tour/'+k+'.jpg',preview:'tour/'+k+'-preview.jpg'};});
-      tourViewer=pannellum.viewer('pano',{
-        default:{firstScene:'bedroom',autoLoad:true,autoRotate:-2,autoRotateInactivityDelay:5000,
-          showZoomCtrl:false,showFullscreenCtrl:true,compass:false,hfov:85,minHfov:55,maxHfov:110,friction:0.15},
-        scenes:scenes
-      });
-      ['mousedown','touchstart'].forEach(function(ev){tourViewer.on(ev,function(){box.classList.add('touched');});});
-      tourViewer.on('scenechange',function(id){chips.forEach(function(b){var on=b.dataset.scene===id;b.classList.toggle('on',on);if(on)b.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'});});});
-      chips.forEach(function(b){b.addEventListener('click',function(){if(tourViewer.getScene()!==b.dataset.scene)tourViewer.loadScene(b.dataset.scene);});});
-    };
-    if(typeof pannellum!=='undefined'){go();return;}
-    var sc=document.createElement('script');
-    sc.src='https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js';
-    sc.onload=go;sc.onerror=function(){tourLoading=false;};
-    document.head.appendChild(sc);
-  }
-  var tourSec=document.getElementById('tour');
-  if('IntersectionObserver' in window){
-    new IntersectionObserver(function(en,obs){if(en[0].isIntersecting){initTour();obs.disconnect();}},{rootMargin:'300px'}).observe(tourSec);
-  }else{window.addEventListener('load',initTour);}
   /* WhatsApp click tracking */
   (function(){
     var src='';
