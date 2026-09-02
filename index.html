@@ -122,6 +122,17 @@
   .scenes button{flex:0 0 auto;padding:9px 15px;border-radius:100px;border:1px solid var(--line);background:transparent;
     color:var(--mut);font-family:inherit;font-size:12.5px;letter-spacing:.03em;cursor:pointer;transition:all .2s;}
   .scenes button.on{background:var(--ink);color:#fff;border-color:var(--ink);}
+
+  /* tour fullscreen */
+  .tour .tfs{position:absolute;top:12px;right:12px;z-index:4;width:40px;height:40px;border-radius:50%;border:0;cursor:pointer;
+    background:rgba(28,20,14,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    display:flex;align-items:center;justify-content:center;padding:0;}
+  .tour .tfs svg{width:18px;height:18px;fill:#fff;}
+  .tour.fs{position:fixed;inset:0;z-index:60;margin:0;border-radius:0;aspect-ratio:auto;max-height:none;box-shadow:none;}
+  .tour.fs .thint{display:none;}
+  .scenes.fsmode{position:fixed;left:0;right:0;bottom:0;z-index:61;margin:0;padding:14px 16px calc(14px + env(safe-area-inset-bottom));}
+  .scenes.fsmode button{color:#fff;border-color:rgba(255,255,255,.4);background:rgba(28,20,14,.35);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);}
+  .scenes.fsmode button.on{background:#fff;color:var(--ink);border-color:#fff;}
 </style>
 </head>
 <body>
@@ -149,6 +160,7 @@
       <div class="tour" id="tourBox">
         <div id="pano"></div>
         <div class="thint">Drag to look around</div>
+        <button class="tfs" id="tourFs" aria-label="Fullscreen"></button>
       </div>
       <div class="scenes" id="scenes">
         <button class="on" data-scene="bedroom">Bedroom</button>
@@ -266,12 +278,25 @@
       chips.forEach(function(b){var k=b.dataset.scene;scenes[k]={type:'equirectangular',panorama:'tour/'+k+'.jpg',preview:'tour/'+k+'-preview.jpg'};});
       tourViewer=pannellum.viewer('pano',{
         default:{firstScene:'bedroom',autoLoad:true,autoRotate:-2,autoRotateInactivityDelay:5000,
-          showZoomCtrl:false,showFullscreenCtrl:true,compass:false,hfov:85,minHfov:55,maxHfov:110,friction:0.15},
+          showZoomCtrl:false,showFullscreenCtrl:false,compass:false,hfov:85,minHfov:55,maxHfov:110,friction:0.15},
         scenes:scenes
       });
       ['mousedown','touchstart'].forEach(function(ev){tourViewer.on(ev,function(){box.classList.add('touched');});});
       tourViewer.on('scenechange',function(id){chips.forEach(function(b){var on=b.dataset.scene===id;b.classList.toggle('on',on);if(on)b.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'});});});
       chips.forEach(function(b){b.addEventListener('click',function(){if(tourViewer.getScene()!==b.dataset.scene)tourViewer.loadScene(b.dataset.scene);});});
+      var fsBtn=document.getElementById('tourFs'),scRow=document.getElementById('scenes');
+      var icEnter='<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>';
+      var icExit='<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/></svg>';
+      fsBtn.innerHTML=icEnter;
+      function setFs(on){
+        box.classList.toggle('fs',on);
+        scRow.classList.toggle('fsmode',on);
+        document.body.style.overflow=on?'hidden':'';
+        fsBtn.innerHTML=on?icExit:icEnter;
+        setTimeout(function(){tourViewer.resize();},60);
+      }
+      fsBtn.addEventListener('click',function(){setFs(!box.classList.contains('fs'));});
+      document.addEventListener('keydown',function(e){if(e.key==='Escape'&&box.classList.contains('fs'))setFs(false);});
     };
     if(typeof pannellum!=='undefined'){go();return;}
     var sc=document.createElement('script');
