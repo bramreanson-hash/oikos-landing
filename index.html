@@ -133,6 +133,11 @@
   .scenes.fsmode{position:fixed;left:0;right:0;bottom:0;z-index:61;margin:0;padding:14px 16px calc(14px + env(safe-area-inset-bottom));}
   .scenes.fsmode button{color:#fff;border-color:rgba(255,255,255,.4);background:rgba(28,20,14,.35);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);}
   .scenes.fsmode button.on{background:#fff;color:var(--ink);border-color:#fff;}
+
+  /* location map */
+  .mapcard{margin-top:16px;border-radius:22px;overflow:hidden;box-shadow:0 14px 32px rgba(0,0,0,.14);position:relative;aspect-ratio:4/3;background:#e8e4dc;}
+  .mapcard iframe{position:absolute;inset:0;width:100%;height:100%;border:0;filter:saturate(.85);}
+  .maplink{display:block;text-align:center;margin-top:12px;font-size:12.5px;letter-spacing:.06em;color:var(--accent);font-weight:500;}
 </style>
 </head>
 <body>
@@ -224,6 +229,11 @@
         <div class="li"><b>Airport</b><i>15 min</i></div>
         <div class="li"><b>Food &amp; gym</b><i>Next door</i></div>
       </div>
+      <div class="mapcard">
+        <iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Oikos CoLiving location map"
+          src="https://maps.google.com/maps?q=Jl.%20Nuansa%20Udayana%20Utara%20II%20No.29%2C%20Jimbaran%2C%20Kuta%20Selatan&z=15&output=embed"></iframe>
+      </div>
+      <a class="maplink" href="https://www.google.com/maps/search/?api=1&query=Oikos%20CoLiving%20Jimbaran%20Bali" target="_blank" rel="noopener">Open in Google Maps &rarr;</a>
     </div>
   </section>
 
