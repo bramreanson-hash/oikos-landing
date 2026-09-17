@@ -24,3 +24,48 @@
   to = "/?utm_source=fb&utm_medium=social&utm_campaign=ags26"
   status = 302
   force = true
+
+# Cetak / offline (QR)
+[[redirects]]
+  from = "/spd"
+  to = "/?utm_source=qr&utm_medium=print&utm_campaign=spanduk_parkir"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/kamar"
+  to = "/?utm_source=qr&utm_medium=print&utm_campaign=kartu_kamar"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/flyer"
+  to = "/?utm_source=qr&utm_medium=print&utm_campaign=brosur_flyer"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/qr"
+  to = "/?utm_source=qr&utm_medium=print&utm_campaign=qr_umum"
+  status = 302
+  force = true
+
+# Google Business Profile
+[[redirects]]
+  from = "/gbp"
+  to = "/?utm_source=google&utm_medium=organic&utm_campaign=gbp_profile"
+  status = 302
+  force = true
+
+# Keluar (langsung ke platform)
+[[redirects]]
+  from = "/wa"
+  to = "https://wa.me/6285190882885?text=Halo%20Oikos!%20Saya%20tertarik%20sewa%20kamar.%20Kamar%20apa%20yang%20masih%20tersedia%3F"
+  status = 302
+  force = true
+
+[[redirects]]
+  from = "/insta"
+  to = "https://www.instagram.com/oikoscoliving"
+  status = 302
+  force = true
