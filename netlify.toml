@@ -69,3 +69,9 @@
   to = "https://www.instagram.com/oikoscoliving"
   status = 302
   force = true
+
+[[redirects]]
+  from = "/review"
+  to = "https://g.page/r/CZqDJdzzDgtyEBM/review"
+  status = 302
+  force = true
