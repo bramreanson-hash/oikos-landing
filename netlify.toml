@@ -53,7 +53,7 @@
 # Google Business Profile
 [[redirects]]
   from = "/gbp"
-  to = "/?utm_source=google&utm_medium=organic&utm_campaign=gbp_profile"
+  to = "/?utm_source=gbp&utm_medium=organic&utm_campaign=gbp_profile"
   status = 302
   force = true
 
