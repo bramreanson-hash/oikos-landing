@@ -75,3 +75,16 @@
   to = "https://g.page/r/CZqDJdzzDgtyEBM/review"
   status = 302
   force = true
+
+# bahasa lama -> baru
+[[redirects]]
+  from = "/id/*"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/en/faq/*"
+  to = "/faq/"
+  status = 301
+  force = true
